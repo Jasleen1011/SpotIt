@@ -3,7 +3,7 @@
  * Students can modify and extend to implement their game.
  * Add your name as an author and the date!
  */
-package ca.sheridancollege.project;
+package basecode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +15,7 @@ import java.util.Collections;
  * @author dancye
  * @author Paul Bonenfant Jan 2020
  */
+
 public class GroupOfCards {
 
     //The group of cards, stored in an ArrayList
@@ -23,6 +24,7 @@ public class GroupOfCards {
 
     public GroupOfCards(int size) {
         this.size = size;
+        cards = new ArrayList<>();
     }
 
     /**
@@ -50,6 +52,13 @@ public class GroupOfCards {
      */
     public void setSize(int size) {
         this.size = size;
+    }
+    
+    /**
+     * @param card the card to be added
+     */
+    public void addCard(Card card) {
+        cards.add(card);
     }
 
 }//end class
