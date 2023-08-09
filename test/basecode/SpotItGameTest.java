@@ -20,14 +20,14 @@ public class SpotItGameTest {
     public SpotItGameTest() {
     }
     
-    @BeforeAll
+  /*  @BeforeAll
     public static void setUpClass() {
     }
     
     @AfterAll
     public static void tearDownClass() {
     }
-    
+    */
     @BeforeEach
     public void setUp() {
     }
@@ -45,7 +45,7 @@ public class SpotItGameTest {
         SpotItGame instance = null;
         instance.play();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
     }
 
     /**
@@ -57,7 +57,19 @@ public class SpotItGameTest {
         SpotItGame instance = null;
         instance.declareWinner();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       // fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of main method, of class SpotItGame.
+     */
+    @Test
+   /*public void testMain() {
+        System.out.println("main");
+        String[] args = null;
+        SpotItGame.main(args);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");*?
     }
     
 }

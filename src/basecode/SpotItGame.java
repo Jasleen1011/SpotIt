@@ -9,51 +9,64 @@ package basecode;
  * @author harma
  */
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collections;
 
-public class SpotItGame extends Game {
-    private ArrayList<Card> deck;
-    private GroupOfCards groupOfCards;
+public class SpotItGame {
+    private ArrayList<SpotItPlayer> players;
+    private ArrayList<SpotItCard> cardDeck; // Deck for both center card and player's cards
     private SpotItCard centerCard;
+    private int currentRound;
+    private static final int MAX_ROUNDS = 6;
 
-    public SpotItGame(String name) {
-        super(name);
-        deck = new ArrayList<>();
-        groupOfCards = new GroupOfCards(4);
+    public SpotItGame(String spot_It_Game) {
+        players = new ArrayList<>();
+        cardDeck = new ArrayList<>();
         centerCard = null;
+        currentRound = 0;
+        initializeDeck();
     }
 
     private void initializeDeck() {
-        String[] symbols = {"Heart", "Star", "Smiley", "Moon", "Sun", "Triangle", "Square", "Circle", "Diamond", "Arrow"};
-        for (String symbol : symbols) {
-            deck.add(new SpotItCard(symbol));
-        }
-        Collections.shuffle(deck);
-    }
-
-    private void dealCards() {
-        for (Player player : getPlayers()) {
-            ArrayList<Card> playerCards = new ArrayList<>();
-            for (int i = 0; i < groupOfCards.getSize(); i++) {
-                playerCards.add(deck.remove(0));
+        // Initialize card deck with 10 copies of each symbol
+        for (int i = 0; i < 10; i++) {
+            for (String symbol : SpotItCard.SYMBOLS) {
+                cardDeck.add(new SpotItCard(symbol));
             }
-            ((SpotItPlayer) player).setCards(playerCards);
         }
+        Collections.shuffle(cardDeck);
     }
 
     private void generateCenterCard() {
-        centerCard = (SpotItCard) deck.remove(0);
+        if (!cardDeck.isEmpty()) {
+            centerCard = cardDeck.remove(0);
+        } else {
+            System.out.println("Card deck is empty. No more cards available.");
+        }
+    }
+
+    public ArrayList<SpotItPlayer> getPlayers() {
+        return players; // Return the list of SpotItPlayers
     }
 
     private void playRound() {
-        System.out.println("\n--- Round Start ---");
+        currentRound++;
+        System.out.println("\n--- Round " + currentRound + " ---");
         generateCenterCard();
+
         System.out.println("Center Card: " + centerCard);
 
-        for (Player player : getPlayers()) {
+        for (SpotItPlayer player : players) {
             SpotItPlayer spotItPlayer = (SpotItPlayer) player;
+
+            // Generate new cards for the player in each round
+            spotItPlayer.generateCards(cardDeck); // Use the single cardDeck
+
+            ArrayList<SpotItCard> playerCards = spotItPlayer.getCards();
+            System.out.println(spotItPlayer.getName() + "'s Cards: " + playerCards);
+
             System.out.print(spotItPlayer.getName() + ", do you have a matching card? (yes or no): ");
             Scanner scanner = new Scanner(System.in);
             String response = scanner.nextLine().trim().toLowerCase();
@@ -63,27 +76,18 @@ public class SpotItGame extends Game {
                 response = scanner.nextLine().trim().toLowerCase();
             }
 
-            if (response.equals("yes")) {
-                if (spotItPlayer.hasMatchingCard(centerCard)) {
-                    System.out.println("Correct! You get a point!");
-                    spotItPlayer.incrementScore();
-                } else {
-                    System.out.println("Oops! You don't have a matching card.");
-                }
+            boolean hasMatchingCard = spotItPlayer.hasMatchingCard(centerCard);
+            if ((response.equals("yes") && hasMatchingCard) || (response.equals("no") && !hasMatchingCard)) {
+                System.out.println("Correct! You get a point!");
+                spotItPlayer.incrementScore();
             } else {
-                if (spotItPlayer.hasMatchingCard(centerCard)) {
-                    System.out.println("Oops! You have a matching card, but you said 'no'.");
-                } else {
-                    System.out.println("Correct! You don't have a matching card.");
-                    spotItPlayer.incrementScore();
-                }
+                System.out.println("Oops! You don't have a matching card.");
             }
-        }
 
-        System.out.println("--- Round End ---");
+            System.out.println("--- Round End ---");
+        }
     }
 
-    @Override
     public void play() {
         Scanner scanner = new Scanner(System.in);
 
@@ -93,25 +97,20 @@ public class SpotItGame extends Game {
         int numPlayers = scanner.nextInt();
         scanner.nextLine();
 
+        // Initialize the players ArrayList
+        players.clear();
         for (int i = 0; i < numPlayers; i++) {
             System.out.print("Enter name for Player " + (i + 1) + ": ");
             String playerName = scanner.nextLine();
-            getPlayers().add(new SpotItPlayer(playerName));
-        }
-
-        initializeDeck();
-        dealCards();
-        
-        System.out.println("Players and their cards:");
-        for (Player player : getPlayers()) {
-            SpotItPlayer spotItPlayer = (SpotItPlayer) player;
-            System.out.println(spotItPlayer.getName() + ": " + spotItPlayer.getCards());
+            players.add(new SpotItPlayer(playerName));
         }
 
         boolean continueGame = true;
-        while (continueGame) {
-            groupOfCards.shuffle();
-            playRound();
+        while (continueGame && currentRound < MAX_ROUNDS) {
+            for (SpotItPlayer player : players) {
+                player.generateCards(cardDeck); // Generate cards from the card deck
+                playRound(); // Call the playRound method without passing arguments
+            }
 
             System.out.print("Do you want to continue to the next round? (yes or no): ");
             String response = scanner.nextLine().trim().toLowerCase();
@@ -120,24 +119,17 @@ public class SpotItGame extends Game {
                 System.out.print("Invalid response. Please enter 'yes' or 'no': ");
                 response = scanner.nextLine().trim().toLowerCase();
             }
-
             continueGame = response.equals("yes");
         }
 
-        declareWinner();
-    }
-
-    @Override
-    public void declareWinner() {
         System.out.println("\nGame over! Final Scores:");
-        for (Player player : getPlayers()) {
-            SpotItPlayer spotItPlayer = (SpotItPlayer) player;
-            System.out.println(spotItPlayer.getName() + ": " + spotItPlayer.getScore());
+        for (SpotItPlayer player : players) {
+            System.out.println(player.getName() + ": " + player.getScore());
         }
     }
 
     public static void main(String[] args) {
-        SpotItGame spotItGame = new SpotItGame("Spot It Game");
-        spotItGame.play();
+        SpotItGame game = new SpotItGame("Spot It Game");
+        game.play();
     }
 }

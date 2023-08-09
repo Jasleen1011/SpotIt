@@ -12,7 +12,7 @@ package basecode;
 import java.util.ArrayList;
 
 public class SpotItPlayer extends Player {
-    private ArrayList<Card> cards;
+    private final ArrayList<SpotItCard> cards;
     private int score;
 
     public SpotItPlayer(String name) {
@@ -21,33 +21,40 @@ public class SpotItPlayer extends Player {
         score = 0;
     }
 
-    public ArrayList<Card> getCards() {
+    public ArrayList<SpotItCard> getCards() {
         return cards;
     }
 
-    public void setCards(ArrayList<Card> cards) {
-        this.cards.addAll(cards);
+    public void generateCards(ArrayList<SpotItCard> playerCardDeck) {
+        if (playerCardDeck.size() >= 4) {
+            cards.clear();
+            for (int i = 0; i < 4; i++) {
+                cards.add(playerCardDeck.remove(0));
+            }
+        } else {
+            System.out.println("Insufficient cards in the player's card deck.");
+        }
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void incrementScore() {
-        score++;
-    }
-
-    public boolean hasMatchingCard(SpotItCard centerCard) {
-        for (Card card : cards) {
-            if (card.toString().equals(centerCard.toString())) {
+    public boolean hasMatchingCard(SpotItCard centerCardSymbol) {
+        for (SpotItCard card : cards) {
+            if (card.hasSymbolOnCard(centerCardSymbol)) {
                 return true;
             }
         }
         return false;
     }
 
+    public void incrementScore() {
+        score++;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
     @Override
     public void play() {
-        // No additional play logic needed here
+        // Implement the play method here if needed
     }
 }

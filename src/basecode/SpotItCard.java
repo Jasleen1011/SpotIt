@@ -8,7 +8,12 @@ package basecode;
  *
  * @author harma
  */
-public class SpotItCard extends Card{
+public class SpotItCard {
+    // Define an array of symbols for SpotItCard
+    public static final String[] SYMBOLS = {
+        "heart", "triangle", "rectangle", "circle", "spade", 
+        "dot", "diamond", "moon", "star", "club"
+    };
 
     private String symbol;
 
@@ -16,11 +21,15 @@ public class SpotItCard extends Card{
         this.symbol = symbol;
     }
 
-    /**
-     * Returns the symbol of the SpotItCard.
-     *
-     * @return the symbol of the card.
-     */
+    public String getSymbol() {
+        return symbol;
+    }
+
+
+    public boolean hasSymbolOnCard(SpotItCard symbol) {
+        return this.symbol.equals(symbol);
+    }
+
     @Override
     public String toString() {
         return symbol;

@@ -11,8 +11,7 @@ package basecode;
 
 public class Main {
     public static void main(String[] args) {
-        SpotItGame spotItGame = new SpotItGame("Spot It Game");
+        SpotItGame spotItGame = new SpotItGame("Spot It Game"); // Make sure the constructor argument matches
         spotItGame.play();
     }
 }
-

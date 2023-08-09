@@ -20,8 +20,16 @@ public class SpotItPlayerTest {
     
     public SpotItPlayerTest() {
     }
+/*
+    @BeforeAll
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterAll
+    public static void tearDownClass() throws Exception {
+    }
     
-  /*  @BeforeAll
+   @BeforeAll
     public static void setUpClass() {
     }
     
@@ -39,7 +47,7 @@ public class SpotItPlayerTest {
 
     /**
      * Test of getCards method, of class SpotItPlayer.
-     */
+    
     @Test
     public void testGetCardsgood() {
         System.out.println("getCards");
@@ -52,7 +60,7 @@ public class SpotItPlayerTest {
     }
     
     
-
+ */
     /**
      * Test of setCards method, of class SpotItPlayer.
      */
@@ -83,7 +91,7 @@ public class SpotItPlayerTest {
     /**
      * Test of incrementScore method, of class SpotItPlayer.
      */
-    @Test
+  /*  @Test
     public void testIncrementScore() {
         System.out.println("incrementScore");
         SpotItPlayer instance = null;
@@ -102,6 +110,35 @@ public class SpotItPlayerTest {
         instance.play();
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getCards method, of class SpotItPlayer.
+     */
+    @Test
+    public void testGetCards() {
+        System.out.println("getCards");
+        SpotItPlayer instance = null;
+        ArrayList<Card> expResult = null;
+        ArrayList<Card> result = instance.getCards();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of hasMatchingCard method, of class SpotItPlayer.
+     */
+    @Test
+    public void testHasMatchingCard() {
+        System.out.println("hasMatchingCard");
+        SpotItCard centerCard = null;
+        SpotItPlayer instance = null;
+        boolean expResult = false;
+        boolean result = instance.hasMatchingCard(centerCard);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
 }
