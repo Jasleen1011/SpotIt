@@ -24,9 +24,9 @@ public class SpotItPlayer extends Player {
     public ArrayList<Card> getCards() {
         return cards;
     }
-    
+
     public void setCards(ArrayList<Card> cards) {
-    this.cards.addAll(cards);
+        this.cards.addAll(cards);
     }
 
     public int getScore() {
@@ -37,9 +37,17 @@ public class SpotItPlayer extends Player {
         score++;
     }
 
+    public boolean hasMatchingCard(SpotItCard centerCard) {
+        for (Card card : cards) {
+            if (card.toString().equals(centerCard.toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void play() {
         // No additional play logic needed here
     }
 }
-
